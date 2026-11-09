@@ -211,7 +211,7 @@ footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-s
   .tiers,.recipes,.steps,.values,.b2b-form{grid-template-columns:1fr}
   .nav nav{order:3;width:100%;gap:16px;padding-bottom:10px;overflow-x:auto}
 }
-.wa-float{position:fixed;right:20px;bottom:20px;width:56px;height:56px;border-radius:50%;background:#C9A24B;display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:60}.wa-float:hover{background:#E0BC6A}.wa-float:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.wa-float{position:fixed;right:20px;bottom:20px;width:56px;height:56px;border-radius:50%;background:#C9A24B;display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:60}.wa-float:hover{background:#E0BC6A}.wa-float[hidden]{display:none}.wa-float:focus-visible{outline:2px solid #fff;outline-offset:3px}
 </style>
 </head>
 <body>
@@ -290,7 +290,7 @@ footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-s
     <h2 style="font-size:clamp(32px,4vw,46px);margin-top:10px;max-width:20ch">Lo que hace que valga más que un ahumador</h2>
     <div class="values">
       <div class="value"><b>Nombre personalizado</b><span>En vinilo dorado, sin costo extra.</span></div>
-      <div class="value"><b>Regalo listo</b><span>Tarjeta escrita a mano, sello de lacre y papel seda.</span></div>
+      <div class="value"><b>Regalo listo</b><span>Tarjeta con tu mensaje personalizado, sello de lacre y papel seda.</span></div>
       <div class="value"><b>Recetario + video</b><span>Seis cócteles en papel premium y guía por QR.</span></div>
       <div class="value"><b>Envío gratis</b><span>A todo Chile continental. RM en 24–48 h hábiles.</span></div>
       <div class="value"><b>Armado en Chile</b><span>Cada kit se revisa antes de salir.</span></div>
@@ -358,6 +358,7 @@ footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-s
     <h2 style="font-size:clamp(32px,4vw,46px);margin:10px 0 18px">Antes de regalar</h2>
     <details><summary>¿El soplete viene con gas?</summary><p>No. Por normativa de transporte se envía vacío. Se recarga con gas butano de cualquier ferretería o supermercado.</p></details>
     <details><summary>¿Qué diferencia hay entre Madera Vinilo y Roble Reserva?</summary><p>Las dos usan caja de madera con logo y nombre en vinilo dorado. Roble Reserva suma 2 vasos de whisky de cristal con el nombre del destinatario: el regalo completo para estrenar el ritual.</p></details>
+    <details><summary>¿Puedo escribir mi propio mensaje en la tarjeta?</summary><p>Sí. Al reservar, escribe tu mensaje (hasta 200 caracteres) y lo imprimimos en la tarjeta de regalo que va dentro del kit. Si no escribes nada, va una tarjeta con un saludo de Humo &amp; Roble.</p></details>
     <details><summary>¿Cómo se cuidan los vasos personalizados?</summary><p>Lávalos a mano, sin esponja abrasiva y sin lavavajillas, para que el vinilo dure.</p></details>
     <details><summary>¿Cuánto demora el envío?</summary><p>Despachamos en 1 a 2 días hábiles. En la Región Metropolitana llega en 24 a 48 horas; en regiones, en 2 a 5 días hábiles. El envío es gratis.</p></details>
     <details><summary>¿Sirve para otras bebidas?</summary><p>Sí: whisky, ron, mezcal, cócteles y también quesos, frutos secos y postres.</p></details>
@@ -380,6 +381,7 @@ footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-s
   <div class="drawer-foot">
     <div class="row"><span>Envío</span><span class="yes">Gratis</span></div>
     <div class="row" style="font-weight:700;font-size:18px"><span>Total</span><span class="num" id="total">$0</span></div>
+    <div class="field"><label for="cMsg">Mensaje para la tarjeta de regalo (opcional)</label><textarea id="cMsg" maxlength="200" rows="3" placeholder="Ej.: Feliz cumpleaños, papá. Que cada ahumado te recuerde lo mucho que te queremos."></textarea><span class="hint">Hasta 200 caracteres. Lo imprimimos en la tarjeta del kit. Si son varios regalos, indícanos un mensaje por kit en WhatsApp.</span></div>
     <div class="field"><label for="cCom">Comuna de despacho</label><input type="text" id="cCom" placeholder="Ej.: Providencia" autocomplete="address-level2"></div>
     <button class="btn btn-gold" id="checkout" type="button">Reservar por WhatsApp</button>
     <p class="hint" style="margin-top:8px">Te confirmamos stock, fecha de entrega y datos de transferencia por WhatsApp. Preventa: abono 50% para reservar.</p>
@@ -483,8 +485,8 @@ footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-s
     else if(el.id==="checkout"){
       if(!state.cart.length){$("checkoutNote").textContent="Agrega al menos un kit para reservar.";$("checkoutNote").hidden=false;return;}
       var lines=state.cart.map(function(i){return "• "+i.q+" × "+i.t+" Kit "+(i.kit==="b"?"Básico":"Premium")+" ("+fmt(i.price*i.q)+")"+(i.name?" – Nombre: "+i.name:"");});
-      var tot=state.cart.reduce(function(a,i){return a+i.q*i.price;},0), com=$("cCom").value.trim();
-      var msg="Hola Humo & Roble, quiero reservar en la preventa:\n"+lines.join("\n")+"\nTotal: "+fmt(tot)+" (IVA y envío incluidos)"+(com?"\nComuna: "+com:"");
+      var tot=state.cart.reduce(function(a,i){return a+i.q*i.price;},0), com=$("cCom").value.trim(), cm=$("cMsg").value.trim();
+      var msg="Hola Humo & Roble, quiero reservar en la preventa:\n"+lines.join("\n")+"\nTotal: "+fmt(tot)+" (IVA y envío incluidos)"+(cm?"\nMensaje para la tarjeta: \""+cm+"\"":"")+(com?"\nComuna: "+com:"");
       window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(msg),"_blank","noopener");
     }
   });
