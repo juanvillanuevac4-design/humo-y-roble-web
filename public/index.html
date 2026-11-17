@@ -212,6 +212,7 @@ footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-s
   .nav nav{order:3;width:100%;gap:16px;padding-bottom:10px;overflow-x:auto}
 }
 .wa-float{position:fixed;right:20px;bottom:20px;width:56px;height:56px;border-radius:50%;background:#C9A24B;display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:60}.wa-float:hover{background:#E0BC6A}.wa-float[hidden]{display:none}.wa-float:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.film{padding:56px 0 72px}.film-box{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--line);background:#000;aspect-ratio:16/9}.film-box video{display:block;width:100%;height:100%;object-fit:cover}.film-sound{position:absolute;right:14px;bottom:14px;background:rgba(14,12,11,.75);color:var(--ivory);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font:600 14px var(--body);cursor:pointer}.film-sound:hover{border-color:var(--gold)}.film-sound:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 </style>
 </head>
 <body>
@@ -241,6 +242,17 @@ footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-s
       <div class="lid" aria-hidden="true"><div class="barrel"></div><div class="disk"></div></div>
       <div class="glass" aria-hidden="true"><div class="cup"></div><div class="rim"></div><div class="ice"></div></div>
       <div class="stage-cap"><span>Viruta de roble · 20 s de humo</span><span>Old Fashioned</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="film" id="video" aria-label="Video: el ritual del ahumado">
+  <div class="wrap">
+    <div class="eyebrow">Míralo en 15 segundos</div>
+    <h2 style="margin:6px 0 22px">Así se ahúma un whisky en casa</h2>
+    <div class="film-box">
+      <video id="filmVideo" src="video/el-ritual.mp4" poster="video/el-ritual.jpg" autoplay muted loop playsinline preload="metadata"></video>
+      <button class="film-sound" id="filmSound" type="button" aria-pressed="false">Activar sonido</button>
     </div>
   </div>
 </section>
@@ -532,6 +544,11 @@ footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-s
   if(reduce){for(var i=0;i<160;i++){parts.push(spawn());parts.forEach(function(p){p.life++;p.y-=p.vy*2;p.r+=.2;});} step();}
   else { for(var j=0;j<120;j++){ if(parts.length<70) parts.push(spawn()); parts.forEach(function(p){p.life++;p.y-=p.vy;p.x+=p.vx;p.r+=.12;}); } step(); }
 })();
+</script>
+<script>
+(function(){var v=document.getElementById("filmVideo"),b=document.getElementById("filmSound");if(!v||!b)return;
+if(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches){v.removeAttribute("autoplay");v.pause();v.controls=true;}
+b.addEventListener("click",function(){v.muted=!v.muted;if(!v.muted){v.play();}b.textContent=v.muted?"Activar sonido":"Silenciar";b.setAttribute("aria-pressed",String(!v.muted));});})();
 </script>
 </body>
 </html>
